@@ -1,11 +1,21 @@
 from pathlib import Path
 from dotenv import dotenv_values
-import datetime
+import time
 
-from backend import get_id_token, get_device, get_pattern
+from backend import get_id_token, get_device
+from led_control import set_color, show
 
-# 1s between polling
-BACKEND_POLL_PERIOD = datetime.timedelta(seconds=1)
+# these should come from model and backend respectively
+import dummy_pos
+import dummy_fragment
+light_pos = dummy_pos.light_pos
+fragment = dummy_fragment.fragment
+
+# 1hz backend polling rate
+BACKEND_POLL_PERIOD = 1
+
+# 10hz led refresh rate
+LED_POLL_PERIOD = 1/10
 
 path = Path(__file__).parent / "../env/user.env"
 config = dotenv_values(path)
@@ -14,12 +24,15 @@ config = dotenv_values(path)
 id_token = get_id_token(config["username"], config["password"])
 
 content = None
-last_polled_content = datetime.datetime.now() - BACKEND_POLL_PERIOD
+
+now = time.time()
+last_polled_content = now - BACKEND_POLL_PERIOD
+last_polled_led = now - LED_POLL_PERIOD
 
 while True:
 
     # poll backend
-    now = datetime.datetime.now()
+    now = time.time()
     if now > last_polled_content + BACKEND_POLL_PERIOD:
         last_polled_content = now
 
@@ -33,4 +46,13 @@ while True:
                 print(new_content)
 
             content = new_content
+
+    # update lights
+    if now > last_polled_led + LED_POLL_PERIOD:
+        for i, p in enumerate(light_pos):
+            color = fragment(p, now)
+            set_color(i, color)
+
+        show()
+
 
