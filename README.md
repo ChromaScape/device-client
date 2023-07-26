@@ -2,10 +2,10 @@
 
 ## create device credentials
 ```bash
-$ python ./scripts/create_user.py -u EMAIL -p PASSWORD
+$ python3 ./scripts/create_user.py -u EMAIL -p PASSWORD
 ```
 
-## run client
+## run client on raspberry pi
 ```bash
-$ python ./client
+$ sudo python3 ./client
 ```

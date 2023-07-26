@@ -57,6 +57,12 @@ while True:
 
             content = new_content
 
+            try:
+                # yes i know this is sus
+                exec(content)  
+            except:
+                print("An exception occurred")
+
     # update lights
     if now > last_polled_led + LED_POLL_PERIOD:
         for i, p in enumerate(light_pos):
