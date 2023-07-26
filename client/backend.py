@@ -43,3 +43,12 @@ def get_device(firebase_token):
         raise Exception("http error")
 
     return r.json()
+
+def get_pattern(pattern_id, firebase_token):
+    url = "https://chromascape-api-adrienpringle.vercel.app/api/pattern/" + pattern_id
+    headers = {"content-type": "application/json", "Authorization": firebase_token}
+    r = requests.get(url, headers=headers)
+    if not r.status_code == 200:
+        raise Exception("http error")
+
+    return r.json()
