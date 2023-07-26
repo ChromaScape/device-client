@@ -3,7 +3,17 @@ from dotenv import dotenv_values
 import time
 
 from backend import get_id_token, get_device
+
+# comment to run locally
 from led_control import set_color, show
+
+# def set_color(i, color):
+#     print(int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
+
+
+# def show():
+#     pass
+
 
 # these should come from model and backend respectively
 import dummy_pos
